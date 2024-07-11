@@ -1,6 +1,10 @@
 import random
 import string
 import time
+from typing import Any, Generator
+
+from requests import Response
+from sseclient import SSEClient
 
 
 def generate_random_string(length: int = 32) -> str:
@@ -29,3 +33,10 @@ def generate_epoch_15min_later():
     fifteen_minutes = 15 * 60  # 15 minutes in seconds
     future_time = current_time + fifteen_minutes
     return int(future_time)
+
+
+def parse_sse_stream(response: Response) -> Generator[str, Any, None]:
+    client = SSEClient((chunk for chunk in response.iter_content()))
+    for event in client.events():
+        if event.data:
+            yield event.data
