@@ -7,7 +7,7 @@ This should work even you are not a Copilot subscriber.
 
 1. Install copilot_proxy
     ```bash
-    git clone copilot-proxy
+    git clone https://github.com/jjleng/copilot-proxy.git
     cd copilot-proxy
     # install dependencies
     poetry install
