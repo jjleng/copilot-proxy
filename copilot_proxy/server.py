@@ -1,7 +1,7 @@
 import json
 import re
 import time
-from typing import Any, Generator
+from typing import Any, Generator, Iterator
 
 import requests
 from mitmproxy import ctx, http
@@ -146,55 +146,42 @@ def request(flow: http.HTTPFlow) -> None:
         )
 
 
+def handle_streaming_response(
+    flow: http.HTTPFlow, iterator: Iterator[bytes], content_type: str
+) -> None:
+    def stream_chunks(data):
+        for chunk in iterator:
+            yield chunk
+
+    flow.response = http.Response.make(
+        200,  # Necessary, since we inject wrong token to the client. api.githubcopilot.com/chat/completions returns 401
+        # headers fields might not be needed
+        headers={
+            "Content-Type": content_type,
+            "x-request-id": flow.request.headers[b"x-request-id"],
+            "content-security-policy": "default-src 'none'; sandbox",
+        },
+    )
+
+    del flow.response.headers[b"content-length"]
+    # Stream has be to hijacked in responseheaders
+    # https://docs.mitmproxy.org/stable/overview-features/#streaming
+    flow.response.stream = stream_chunks
+
+
 def responseheaders(flow: http.HTTPFlow) -> None:
     if not flow.request.content:
         return
 
     if flow.request.pretty_url == "https://api.githubcopilot.com/chat/completions":
         messages = json.loads(flow.request.content.decode("utf-8"))["messages"]
-        iterator = code_gen(messages)
-
-        def stream_chunks(data):
-            for chunk in iterator:
-                yield chunk
-
-        flow.response = http.Response.make(
-            200,  # Necessary, since we inject wrong token to the client. api.githubcopilot.com/chat/completions returns 401
-            # headers fields might not be needed
-            headers={
-                "Content-Type": "application/json",
-                "x-request-id": flow.request.headers[b"x-request-id"],
-                "content-security-policy": "default-src 'none'; sandbox",
-            },
-        )
-
-        del flow.response.headers[b"content-length"]
-        # Stream has be to hijacked in responseheaders
-        # https://docs.mitmproxy.org/stable/overview-features/#streaming
-        flow.response.stream = stream_chunks
-
+        handle_streaming_response(flow, code_gen(messages), "application/json")
     elif (
         flow.request.pretty_url
         == "https://copilot-proxy.githubusercontent.com/v1/engines/copilot-codex/completions"
     ):
-        iterator = code_completion(json.loads(flow.request.content.decode("utf-8")))
-
-        def stream_chunks(data):
-            for chunk in iterator:
-                yield chunk
-
-        flow.response = http.Response.make(
-            200,  # Necessary, since we inject wrong token to the client. api.githubcopilot.com/chat/completions returns 401
-            # headers fields might not be needed
-            headers={
-                "Content-Type": "text/event-stream",
-                "x-request-id": flow.request.headers[b"x-request-id"],
-                "content-security-policy": "default-src 'none'; sandbox",
-            },
-        )
-
-        del flow.response.headers[b"content-length"]
-        flow.response.stream = stream_chunks
+        body = json.loads(flow.request.content.decode("utf-8"))
+        handle_streaming_response(flow, code_completion(body), "text/event-stream")
 
 
 def response(flow: http.HTTPFlow) -> None:

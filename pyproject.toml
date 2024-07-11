@@ -6,6 +6,9 @@ authors = ["Jijun Leng"]
 license = "MIT"
 readme = "README.md"
 
+[tool.mypy]
+ignore_missing_imports = true
+
 [tool.poetry.dependencies]
 python = "^3.10"
 python-dotenv = "^1.0.1"
@@ -19,6 +22,7 @@ sse-starlette = "^2.1.2"
 black = "^24.4.2"
 isort = "^5.13.2"
 types-requests = "^2.32.0.20240622"
+mypy = "^1.10.1"
 
 [build-system]
 requires = ["poetry-core"]
