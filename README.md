@@ -3,6 +3,14 @@
 Make VS Code GitHub Copilot work with any open weight models, Llama3, DeepSeek-Coder, StarCoder, etc.
 This should work even you are not a Copilot subscriber.
 
+## 🌟 Motivations
+- I'm already familiar with and enjoy using the GitHub Copilot extension (yes, I know there are other awesome extensions, such as Continue.).
+- Copilot may not always utilize the latest GPT models. It currently use models like `gpt-4-0125-preview`, `gpt-3.5-turbo` and others.
+- Transferring code from the editor to ChatGPT to use GPT-4o is inconvenient.
+- I'm interested in using alternative models such as Llama3, DeepSeek-Coder, StarCoder, and Sonnet 3.5.
+- I have subscriptions to both ChatGPT and Copilot but would like to cancel my Copilot subscription.
+
+
 ## 🏃‍♂️ How to Run
 
 1. Install copilot_proxy
@@ -73,4 +81,18 @@ This should work even you are not a Copilot subscriber.
     </div>
 
 
+## 🤔 Why not go the simpler route?
+In VS Code settings, we can
+```json
+{
+  "github.copilot.advanced": {
+    "debug.testOverrideProxyUrl": "http://localhost:11435",
+    "debug.overrideProxyUrl": "http://localhost:11435"
+  }
+}
+```
 
+This did not work for me.
+- Only code completion triggers the endpoint, chatbox does not.
+- Seems I need to keep the Copilot subscription?
+- Flexibility.
