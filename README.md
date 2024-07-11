@@ -3,7 +3,7 @@
 Make VS Code GitHub Copilot work with any open weight models, Llama3, DeepSeek-Coder, StarCoder, etc.
 This should work even you are not a Copilot subscriber.
 
-## 🏃‍♂️ Running With Ollama
+## 🏃‍♂️ How to Run
 
 1. Install copilot_proxy
     ```bash
