@@ -17,9 +17,12 @@ This should work even you are not a Copilot subscriber.
     copilot_proxy --version
     ```
 
-2. Run copilot_proxy with Ollama models
+2. Run copilot_proxy with Ollama models, OpenRouter models or any OpenAI API compatible endpoints
    ```bash
+    # Ollama
     MODEL_URL="http://localhost:11434/v1/chat/completions" MODEL_NAME="llama3:instruct" MODEL_API_KEY="whatever" copilot_proxy start
+    # OpenRouter
+    MODEL_URL="https://openrouter.ai/api/v1/chat/completions" MODEL_NAME="deepseek/deepseek-coder" MODEL_API_KEY="YOUR_KEY" copilot_proxy start
    ```
 
 3. Install mitmproxy certificate
