@@ -34,7 +34,7 @@ This should work even you are not a Copilot subscriber.
    ```
 
 3. Install mitmproxy certificate
-   copilot_proxy uses mitmproxy to proxy the the Copilot traffic. You need to install the mitmproxy certificate.
+   copilot_proxy uses mitmproxy to proxy the Copilot traffic. You need to install the mitmproxy certificate.
    After first run, you should find cert files under ~/.mitmproxy. See https://docs.mitmproxy.org/stable/concepts-certificates/ for details.
 
    Quick guides to import the CA certificate to your operating system.
