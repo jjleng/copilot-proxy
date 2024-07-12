@@ -33,20 +33,20 @@ def code_completion(completion_input: dict) -> Generator[bytes, Any, None]:
     stream = completion_input.get("stream", True)
     extra = completion_input.get("extra", {})
 
-    # Combine prompt and suffix for the user message
+    # I haven't found any good models for code completion tasks without fine tuning
+    # These prompts definitely need more work
     user_prompt = (
         f"{prompt}<insert_your_completion_here>{suffix}\n\n"
         f"Extra Context:\n{json.dumps(extra)}\n\n"
-        "The completion is additional code or comments that users might want to add. "
-        "Do not repeat the first line of the suffix in your response. "
-        "Do not use markdown or code blocks; just print the code or comments directly. "
         f"Now insert your completion at the place marked by `<insert_your_completion_here>`"
     )
 
-    # Formatting the chat completion API input
-    system_prompt = "You are an expert programmer that completes code snippets."
+    system_prompt = (
+        "You are an expert programmer that completes code snippets in code editor."
+        "The completion is additional code or comments that users might want to add. "
+        "You MUST NOT use markdown, code blocks, or any formatting such as ```python; just print the code or comments directly. "
+    )
 
-    # Formatting the chat completion API input
     messages = [
         {"role": "system", "content": system_prompt},
         {"role": "user", "content": user_prompt},
