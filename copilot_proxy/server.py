@@ -33,38 +33,21 @@ def code_completion(completion_input: dict) -> Generator[bytes, Any, None]:
     stream = completion_input.get("stream", True)
     extra = completion_input.get("extra", {})
 
-    # I haven't found any good models for code completion tasks without fine tuning
-    # These prompts definitely need more work
-    user_prompt = (
-        f"{prompt}<insert_your_completion_here>{suffix}\n\n"
-        f"Extra Context:\n{json.dumps(extra)}\n\n"
-        f"Now insert your completion at the place marked by `<insert_your_completion_here>`"
-    )
 
-    system_prompt = (
-        "You are an expert programmer that completes code snippets in code editor."
-        "The completion is additional code or comments that users might want to add. "
-        "You MUST NOT use markdown, code blocks, or any formatting such as ```python; just print the code or comments directly. "
-    )
-
-    messages = [
-        {"role": "system", "content": system_prompt},
-        {"role": "user", "content": user_prompt},
-    ]
-
-    chat_completion_input = {
+    completion_input = {
         "model": MODEL_NAME,
-        "messages": messages,
+        "prompt": prompt,
         "max_tokens": max_tokens,
         "temperature": temperature,
         "top_p": top_p,
         "n": n,
         "stop": stop,
         "stream": stream,
+        "suffix": suffix
     }
 
     # Making the API call
-    url = MODEL_URL
+    url = MODEL_URL.replace("/v1/chat/completions", "/v1/completions")
     headers = {
         "Content-Type": "application/json",
         "Authorization": f"Bearer {MODEL_API_KEY}",
@@ -72,7 +55,7 @@ def code_completion(completion_input: dict) -> Generator[bytes, Any, None]:
 
     # `stream`` is always True
     response = requests.post(
-        url, headers=headers, data=json.dumps(chat_completion_input), stream=stream
+        url, headers=headers, data=json.dumps(completion_input), stream=stream
     )
     response.raise_for_status()
 
@@ -87,7 +70,7 @@ def code_completion(completion_input: dict) -> Generator[bytes, Any, None]:
         choices = data_dict.get("choices", [])
 
         for choice in choices:
-            content = choice.get("delta", {}).get("content", "")
+            content = choice.get("text", "")
             if content:
                 result = {
                     "id": data_dict.get("id"),
@@ -95,7 +78,7 @@ def code_completion(completion_input: dict) -> Generator[bytes, Any, None]:
                     "choices": [
                         {
                             "text": content,
-                            "index": choice.get("index"),
+                            "index": choice.get("index", 0),
                             "finish_reason": choice.get("finish_reason"),
                             "logprobs": choice.get("logprobs"),
                             "p": "aaaa",
@@ -128,6 +111,7 @@ def code_gen(messages: dict) -> Generator[bytes, None, None]:
     }
 
     with requests.post(MODEL_URL, headers=headers, json=data, stream=True) as response:
+        response.raise_for_status()
         for chunk in response.iter_content(chunk_size=None):
             if chunk:
                 yield chunk
