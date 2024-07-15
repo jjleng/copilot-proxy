@@ -5,7 +5,7 @@ This should work even you are not a Copilot subscriber.
 
 ## 🌟 Motivations
 - I'm already familiar with and enjoy using the GitHub Copilot extension (yes, I know there are other awesome extensions, such as Continue.).
-- Copilot may not always utilize the latest GPT models. It currently use models like `gpt-4-0125-preview`, `gpt-3.5-turbo` and others.
+- Copilot may not always utilize the latest GPT models. It currently uses models like `gpt-4-0125-preview`, `gpt-3.5-turbo` and others.
 - Transferring code from the editor to ChatGPT to use GPT-4o is inconvenient.
 - I'm interested in using alternative models such as Llama3, DeepSeek-Coder, StarCoder, and Sonnet 3.5.
 - I have subscriptions to both ChatGPT and Copilot but would like to cancel my Copilot subscription.
@@ -14,6 +14,7 @@ This should work even you are not a Copilot subscriber.
 ## 🏃‍♂️ How to Run
 
 1. Install copilot_proxy
+
     ```bash
     git clone https://github.com/jjleng/copilot-proxy.git
     cd copilot-proxy
@@ -26,6 +27,7 @@ This should work even you are not a Copilot subscriber.
     ```
 
 2. Run copilot_proxy with Ollama models, OpenRouter models or any OpenAI API compatible endpoints
+
    ```bash
     # Ollama
     MODEL_URL="http://localhost:11434/v1/chat/completions" MODEL_NAME="llama3:instruct" MODEL_API_KEY="whatever" copilot_proxy start
@@ -34,6 +36,7 @@ This should work even you are not a Copilot subscriber.
    ```
 
 3. Install mitmproxy certificate
+
    copilot_proxy uses mitmproxy to proxy the Copilot traffic. You need to install the mitmproxy certificate.
    After first run, you should find cert files under ~/.mitmproxy. See https://docs.mitmproxy.org/stable/concepts-certificates/ for details.
 
@@ -74,20 +77,27 @@ This should work even you are not a Copilot subscriber.
    Restart copilot_proxy
 
 4. Setup the proxy in VS Code
+
    Follow the guide here:
    https://docs.github.com/en/copilot/managing-copilot/configure-personal-settings/configuring-network-settings-for-github-copilot
     <div align="center">
       <img src="./docs/proxy.png" alt="Screenshot - Lennon" max-width="600">
     </div>
 
+## ✨ Code Completion
+For code completions, the best result will be calling the model through the FIM (fill-in-the-middle) template. This can be done by calling the `/completion` endpoint with the `suffix` parameter. If your inference server is compatible with OpenAI `/completion` endpoint and supports the `suffix` parameter, you can get better completions by using the code in the `completion` branch. This setup will produce the best result.
+
+NOTICE: Ollama doesn't support the `/completion` endpoint and vLLM doesn't support the `suffix` parameter.
+
+Code from the `main` branch works well with Copilot chat, but might not produce high quality completions. However, it is agnostic about the inference servers.
 
 ## 🤔 Why not go the simpler route?
 In VS Code settings, we can
 ```json
 {
   "github.copilot.advanced": {
-    "debug.testOverrideProxyUrl": "http://localhost:11435",
-    "debug.overrideProxyUrl": "http://localhost:11435"
+    "debug.testOverrideProxyUrl": "http://localhost:11434",
+    "debug.overrideProxyUrl": "http://localhost:11434"
   }
 }
 ```
