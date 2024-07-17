@@ -3,6 +3,10 @@
 Make VS Code GitHub Copilot work with any open weight models, Llama3, DeepSeek-Coder, StarCoder, etc.
 This should work even you are not a Copilot subscriber.
 
+<div>
+  <img src="./docs/what-model-are-you.png" alt="Screenshot - Lennon" max-width="600">
+</div>
+
 ## 🌟 Motivations
 - I'm already familiar with and enjoy using the GitHub Copilot extension (yes, I know there are other awesome extensions, such as Continue.).
 - Copilot may not always utilize the latest GPT models. It currently uses models like `gpt-4-0125-preview`, `gpt-3.5-turbo` and others.
