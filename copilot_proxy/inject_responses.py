@@ -1,7 +1,177 @@
 from copilot_proxy.utils import (generate_epoch_15min_later, generate_fake_asn,
                                  generate_fake_ip, generate_random_string)
-
 MODELS_TO_INJECT = {
+    "data": [
+        {
+            "capabilities": {
+                "family": "gpt-3.5-turbo",
+                "limits": {"max_prompt_tokens": 12288},
+                "object": "model_capabilities",
+                "supports": {"tool_calls": True},
+                "tokenizer": "cl100k_base",
+                "type": "chat",
+            },
+            "id": "gpt-3.5-turbo",
+            "name": "GPT 3.5 Turbo",
+            "object": "model",
+            "version": "gpt-3.5-turbo-0613",
+        },
+        {
+            "capabilities": {
+                "family": "gpt-3.5-turbo",
+                "limits": {"max_prompt_tokens": 12288},
+                "object": "model_capabilities",
+                "supports": {"tool_calls": True},
+                "tokenizer": "cl100k_base",
+                "type": "chat",
+            },
+            "id": "gpt-3.5-turbo-0613",
+            "name": "GPT 3.5 Turbo",
+            "object": "model",
+            "version": "gpt-3.5-turbo-0613",
+        },
+        {
+            "capabilities": {
+                "family": "gpt-4",
+                "limits": {"max_prompt_tokens": 20000},
+                "object": "model_capabilities",
+                "supports": {"tool_calls": True},
+                "tokenizer": "cl100k_base",
+                "type": "chat",
+            },
+            "id": "gpt-4",
+            "name": "GPT 4",
+            "object": "model",
+            "version": "gpt-4-0613",
+        },
+        {
+            "capabilities": {
+                "family": "gpt-4",
+                "limits": {"max_prompt_tokens": 20000},
+                "object": "model_capabilities",
+                "supports": {"tool_calls": True},
+                "tokenizer": "cl100k_base",
+                "type": "chat",
+            },
+            "id": "gpt-4-0613",
+            "name": "GPT 4",
+            "object": "model",
+            "version": "gpt-4-0613",
+        },
+        {
+            "capabilities": {
+                "family": "gpt-4-turbo",
+                "limits": {"max_prompt_tokens": 20000},
+                "object": "model_capabilities",
+                "supports": {
+                    "parallel_tool_calls": True,
+                    "tool_calls": True
+                },
+                "tokenizer": "cl100k_base",
+                "type": "chat",
+            },
+            "id": "gpt-4-0125-preview",
+            "name": "GPT 4 Turbo",
+            "object": "model",
+            "version": "gpt-4-0125-preview",
+        },
+        {
+            "capabilities": {
+                "family": "gpt-4o",
+                "limits": {"max_prompt_tokens": 20000},
+                "object": "model_capabilities",
+                "supports": {
+                    "parallel_tool_calls": True,
+                    "tool_calls": True
+                },
+                "tokenizer": "o200k_base",
+                "type": "chat",
+            },
+            "id": "gpt-4o",
+            "name": "GPT 4o",
+            "object": "model",
+            "version": "gpt-4o-2024-05-13",
+        },
+        {
+            "capabilities": {
+                "family": "gpt-4o",
+                "limits": {"max_prompt_tokens": 20000},
+                "object": "model_capabilities",
+                "supports": {
+                    "parallel_tool_calls": True,
+                    "tool_calls": True
+                },
+                "tokenizer": "o200k_base",
+                "type": "chat",
+            },
+            "id": "gpt-4o-2024-05-13",
+            "name": "GPT 4o",
+            "object": "model",
+            "version": "gpt-4o-2024-05-13",
+        },
+        {
+            "capabilities": {
+                "family": "gpt-4o",
+                "limits": {"max_prompt_tokens": 20000},
+                "object": "model_capabilities",
+                "supports": {
+                    "parallel_tool_calls": True,
+                    "tool_calls": True
+                },
+                "tokenizer": "o200k_base",
+                "type": "chat",
+            },
+            "id": "gpt-4-o-preview",
+            "name": "GPT 4o",
+            "object": "model",
+            "version": "gpt-4o-2024-05-13",
+        },
+        {
+            "capabilities": {
+                "family": "text-embedding-ada-002",
+                "limits": {"max_inputs": 256},
+                "object": "model_capabilities",
+                "supports": {},
+                "tokenizer": "cl100k_base",
+                "type": "embeddings",
+            },
+            "id": "text-embedding-ada-002",
+            "name": "Embedding V2 Ada",
+            "object": "model",
+            "version": "text-embedding-ada-002",
+        },
+        {
+            "capabilities": {
+                "family": "text-embedding-3-small",
+                "limits": {"max_inputs": 256},
+                "object": "model_capabilities",
+                "supports": {"dimensions": True},
+                "tokenizer": "cl100k_base",
+                "type": "embeddings",
+            },
+            "id": "text-embedding-3-small",
+            "name": "Embedding V3 small",
+            "object": "model",
+            "version": "text-embedding-3-small",
+        },
+        {
+            "capabilities": {
+                "family": "text-embedding-3-small",
+                "object": "model_capabilities",
+                "supports": {"dimensions": True},
+                "tokenizer": "cl100k_base",
+                "type": "embeddings",
+            },
+            "id": "text-embedding-3-small-inference",
+            "name": "Embedding V3 small (Inference)",
+            "object": "model",
+            "version": "text-embedding-3-small",
+        },
+    ],
+    "object": "list",
+}
+
+MODELS_TO_INJECT_OLD = {
     "data": [
         {
             "capabilities": {

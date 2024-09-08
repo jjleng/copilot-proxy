@@ -130,6 +130,7 @@ def code_gen(messages: dict) -> Generator[bytes, None, None]:
     with requests.post(MODEL_URL, headers=headers, json=data, stream=True) as response:
         for chunk in response.iter_content(chunk_size=None):
             if chunk:
+                ctx.log.info(f"{chunk}")
                 yield chunk
 
 
