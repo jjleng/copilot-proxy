@@ -1,3 +1,5 @@
+# This project is no longer maintained. (Due to changes introduced by Copilot, the repository will only function with the chat window, not the Edit window.)
+
 # Copilot Proxy
 
 Make VS Code GitHub Copilot work with any open weight models, Llama3, DeepSeek-Coder, StarCoder, etc.
